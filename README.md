@@ -6,3 +6,4 @@ Ubongo
 - crear class ArrayPlantillas, e ir seteando las plantillas con las posibles figuras con las que se puede armar
 - settear al tablero con las 72 gemas distribuidas al azar
 - que el jugador pueda elegir la fila del tablero en donde iniciar
+-holi xd
