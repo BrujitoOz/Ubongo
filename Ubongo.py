@@ -1,9 +1,112 @@
+import pygame
+import random
+white = (255, 255, 255)
+LasFiguras = [
+  [
+    [1,1], #cuadrado       0
+    [1,1]
+  ],
+  [
+    [1,0,0,0], #palote(4)  1
+    [1,0,0,0],
+    [1,0,0,0],
+    [1,0,0,0]
+  ],
+  [
+    [1,0,0], #palo(3)      2
+    [1,0,0],
+    [1,0,0]
+  ],
+  [
+    [1,0], #palito(2)      3
+    [1,0]
+  ],
+  [
+    [0,0,0,1], #L grande(4) 4
+    [0,0,0,1],
+    [0,0,0,1],
+    [0,0,1,1]
+  ],
+  [
+    [0,0,1], #L(3)         5
+    [0,0,1],
+    [0,1,1]
+  ],
+  [
+    [0,1], #L chiquita(2)   6
+    [1,1]
+  ],
+  [
+    [0,0,0], # Tetris1      7
+    [0,1,0],
+    [1,1,1]
+  ],
+  [
+    [0,0,0,0], # Tetris2     8
+    [0,0,0,0],
+    [0,0,1,0],
+    [1,1,1,1]
+  ],
+  [
+    [0,0,0], # gusano1      9
+    [0,1,1],
+    [1,1,0]
+  ],
+  [
+    [0,1,1], # gusano2    10
+    [0,1,0],
+    [1,1,0]
+  ],
+  [
+    [0,0,0], # p            11
+    [0,1,1],
+    [1,1,1]
+  ]
+]
+
+LasPlantillas = [
+  [
+    [1,1,1,1,0],#plantilla 1
+    [1,1,1,0,0],
+    [0,1,1,1,1]
+  ],
+  [
+    [0,0,1,1],#plantilla 2
+    [1,1,1,1],
+    [1,1,1,1],
+    [0,1,1,0]
+
+  ]
+]
+Opciones = [
+    # para la plantilla 0
+    [
+        [LasFiguras[3], LasFiguras[11], LasFiguras[5]],#opcion 0: palito, P, L
+        [LasFiguras[5], LasFiguras[1], LasFiguras[2]],#opcion 1: L, palote, palo
+        [LasFiguras[8], LasFiguras[9], LasFiguras[3]],#opcion 2: tetris2, gusano, palito
+        [LasFiguras[9], LasFiguras[2], LasFiguras[7]],#opcion 3: gusano1, palo, tetris1
+        [LasFiguras[4], LasFiguras[7], LasFiguras[3]],#opcion 4: L grande, tetris1, palito
+        [LasFiguras[2], LasFiguras[5], LasFiguras[9]]#opcion 5: palo, L, gusano1
+    ],
+    # para la plantilla 1
+    [
+        [LasFiguras[9], LasFiguras[2], LasFiguras[8]],#opcion 0: gusano1, palo, tetris2
+        [LasFiguras[5], LasFiguras[11], LasFiguras[2]],#opcion 1: L, P, palo
+        [LasFiguras[9], LasFiguras[6], LasFiguras[11]],#opcion 2: gusano1, L chiquita, P
+        [LasFiguras[0], LasFiguras[2], LasFiguras[4]],#opcion 3: cuadrado, palo, L grande
+        [LasFiguras[6], LasFiguras[10], LasFiguras[5]],#opcion 4: L chiquita, gusnano2, L
+        [LasFiguras[7], LasFiguras[11], LasFiguras[6]]#opcion 5: tetris1, P, L chiquita
+    ]
+
+
+]
+
+
 class Plantilla:
   def __init__(self, matriz, opciones):
     self.matriz = matriz #matriz de la plantilla
     self.opciones = opciones #figuras para armarla
 
-import random
 class Jugador:
   def __init__(self, nombre, es_humano):
     self.nombre = nombre #string
@@ -34,114 +137,32 @@ class Juego:
     return random.choice(simbolos)#elige al azar
 
   def jugar(self):
+      print(self.tablero)
     # se lanza el dado y se activa el tiempo
     # el jugador arma la plantilla que le toco con las figuras que indico el dado
     # cuando acabe, mueve su ficha si quiere, y agarra 2 gemas
     # la ronda acaba cuando termine de hacer eso
     # o cuando el tiempo acabe
     # asi termina la primera ronda, el juego dura 9 rondas
-    return 0 
     
 
-
-LasPiezas = [
-  [
-    [1,1], #cuadrado
-    [1,1]
-  ],
-  [
-    [1,0,0,0], #palote(4)
-    [1,0,0,0],
-    [1,0,0,0],
-    [1,0,0,0]
-  ],
-  [
-    [1,0,0], #palo(3)
-    [1,0,0],
-    [1,0,0]
-  ],
-  [
-    [1,0], #palito(2)
-    [1,0]
-  ],
-  [
-    [0,0,0,1], #L grande(4)
-    [0,0,0,1],
-    [0,0,0,1],
-    [0,0,1,1]
-  ],
-  [
-    [0,0,1], #L(3)
-    [0,0,1],
-    [0,1,1]
-  ],
-  [
-    [0,1], #L chiquita(2)
-    [1,1]
-  ],
-  [
-    [0,0,0], # Tetris1
-    [0,1,0],
-    [1,1,1]
-  ],
-  [
-    [0,0,0,0], # Tetris2
-    [0,0,0,0],
-    [0,0,1,0],
-    [1,1,1,1]
-  ],
-  [
-    [0,0,0], # gusano1
-    [0,1,1],
-    [1,1,0]
-  ],
-  [
-    [0,1,1], # gusano2
-    [0,1,0],
-    [1,1,0]
-  ],
-  [
-    [0,0,0], # deforme
-    [0,1,1],
-    [1,1,1]
-  ]
-]
-
+P0 = Plantilla(LasPlantillas[0], Opciones[0])
+P1 = Plantilla(LasPlantillas[1], Opciones[1])
+ArrayDePlantilla = [P0, P1]
+"""
 j1 = Jugador("Pepe", True)
 j2 = Jugador("Maria", False)
 ListaJugadores = [j1, j2]
-juego = Juego(ListaJugadores, LasPiezas)
-juego.jugar()
+juego = Juego(ListaJugadores, LasFiguras)
+Fin = False
+while not Fin:
+    juego.jugar()
+"""
 
 
 
 
 
-LasPlantillas = [
-  [
-    [1,1,1,1,0],#plantilla 1
-    [1,1,1,0,0],
-    [0,1,1,1,1]
-    #opcion1:palito, deforme, L
-    #opcion2:L, palote, palo
-    #opcion3:tetris2, gusano, palito
-    #opcion4:gusano1, palo, tetris1
-    #opcion5: L grande, tetris1, palito
-    #opcion6: palo, L, gusano1
-  ],
-  [
-    [0,0,1,1],#plantilla 2
-    [1,1,1,1],
-    [1,1,1,1],
-    [0,1,1,0]
-    #opcion1:tetris1,deforme,L chiquita
-    #opcion2:L chiquita, gusano2, L
-    #opcion3:cuadrado, palo, L grande
-    #opcion4:gusano1, L chiquita, deforme
-    #opcion5:L, deforme, palo
-    #opcion6:gusano1, palo, tetris2
-  ]
-]
 
 
 
