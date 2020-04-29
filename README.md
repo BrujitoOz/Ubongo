@@ -7,4 +7,4 @@ Ubongo
 - settear al tablero con las 72 gemas distribuidas al azar
 - que el jugador pueda elegir la fila del tablero en donde iniciar
 -holi xd
--holi boli, Rodri
+-holi boli, Rodri. Que cuentas?
