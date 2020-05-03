@@ -1,6 +1,10 @@
-import pygame
+import pygame, sys
+from pygame.locals import *
 import random
-white = (255, 255, 255)
+from Juego import Juego
+from Jugador import Jugador
+from Constantes import *
+
 LasFiguras = [
   [
     [1,1], #cuadrado       0
@@ -97,47 +101,15 @@ Opciones = [
         [LasFiguras[6], LasFiguras[10], LasFiguras[5]],#opcion 4: L chiquita, gusnano2, L
         [LasFiguras[7], LasFiguras[11], LasFiguras[6]]#opcion 5: tetris1, P, L chiquita
     ]
-
-
 ]
-
 
 class Plantilla:
   def __init__(self, matriz, opciones):
     self.matriz = matriz #matriz de la plantilla
     self.opciones = opciones #figuras para armarla
 
-class Jugador:
-  def __init__(self, nombre, es_humano):
-    self.nombre = nombre #string
-    self.es_humano = es_humano #booleano
-    self.cant_gemas = [0,0,0,0,0,0]
-    # 0rojo, 1verde, 2azul, 3naranaja, 4amarillo, 5morado
-  def SetPlantilla(self, PlantillaAct):
-    #self.PlantillaAct = PlantillaAct #Obj plantilla
-    return 0
 
-        
-class Juego:
-  def __init__(self, ListaJugadores, figuras):
-    self.cant_jugadores = len(ListaJugadores)
-    self.reloj_arena = 60
-    self.jugador_actual = 0 # jugador que esta jugando en este momento
-    self.dado = self.lanzar_dados()
-    self.tablero = self.create_tablero()
-    self.figuras = figuras
-  
-
-  def create_tablero(self):
-    TABLERO = [[_ for _ in range(12)] for _ in range(6)]
-    return TABLERO #Falta aniadir las gemas aleatoriamente
-
-  def lanzar_dados(self):
-    simbolos = [1,2,3,4,5,6]#opciones para armar,podemos poner char
-    return random.choice(simbolos)#elige al azar
-
-  def jugar(self):
-      print(self.tablero)
+    #print(self.tablero)
     # se lanza el dado y se activa el tiempo
     # el jugador arma la plantilla que le toco con las figuras que indico el dado
     # cuando acabe, mueve su ficha si quiere, y agarra 2 gemas
@@ -145,25 +117,38 @@ class Juego:
     # o cuando el tiempo acabe
     # asi termina la primera ronda, el juego dura 9 rondas
     
-
 P0 = Plantilla(LasPlantillas[0], Opciones[0])
 P1 = Plantilla(LasPlantillas[1], Opciones[1])
 ArrayDePlantilla = [P0, P1]
-"""
-j1 = Jugador("Pepe", True)
-j2 = Jugador("Maria", False)
-ListaJugadores = [j1, j2]
-juego = Juego(ListaJugadores, LasFiguras)
-Fin = False
-while not Fin:
-    juego.jugar()
-"""
 
+def main():
+    #nombre, humano o maquina, posicion, color
+    j1 = Jugador("Pepe", True,3,BLUE)
+    j2 = Jugador("Maria", False,3,BLACK)
+    j3 = Jugador("Jose", False,0,GREEN)
+    ListaJugadores = [j1, j2,j3]
 
+    pygame.init()
 
+    # set up fonts
+    basicFont = pygame.font.SysFont(None, 16)#fuente para la letra
+    windowSurface = pygame.display.set_mode((500, 400), 0 , 32)#esto viene a ser como el g graphics de windows form
+    juego = Juego(ListaJugadores, LasFiguras,windowSurface,basicFont)
+    juego.dibujar()
 
+    while True:
+        event = pygame.event.wait()
 
+        if event.type == QUIT:
+          pygame.quit()
+          sys.exit()  
 
+        pressed = pygame.key.get_pressed()
+        juego.jugar(pressed)
+          
+
+if __name__ == "__main__":
+    main()
 
 
 #Instrucciones
