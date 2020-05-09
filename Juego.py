@@ -7,16 +7,13 @@ class Juego:
         self.cant_jugadores = len(listaJugadores)
         self.reloj_arena = 60
         self.jugador_actual = 0
-        self.dado = 1
+        self.dado = -1
         self.plantillaIndex = 0
         self.tablero = self.create_tablero()
         self.tableroJugadores = self.create_tablero_jugadores()
         self.windowSurface = windowSurface
         self.basicFont = basicFont
-        # 0 tirar el dado
-        # 1 armar el puzzle
-        # 2 recoger gemas
-        self.estado = 0
+        self.estado = 0 # 0 tirar el dado, 1 arma el puzzle, 2 recoger gemas
     def create_tablero(self):
         tablero = [[_ for _ in range(12)] for _ in range(6)]
         gemas = []
@@ -37,7 +34,7 @@ class Juego:
             tablero[pos].append(i)
         return tablero
     def lanzar_dados(self):
-        simbolos = [1,2,3,4,5,6]
+        simbolos = [0, 1, 2, 3, 4, 5]
         self.dado = random.choice(simbolos)
     def jugar(self, pressed):
         if self.estado == 0:
@@ -45,7 +42,6 @@ class Juego:
                 self.lanzar_dados()
                 self.estado = 1
                 self.dibujar()
-        
         return
     def dibujar(self):
         self.windowSurface.fill(WHITE)
@@ -137,7 +133,7 @@ class Juego:
                 if fila[j] == 1:
                     pygame.draw.rect(self.windowSurface, RED, (xplantilla, yplantilla, 10, 10))
                 else:
-                    pygame.draw.rect(self.windowSurface, BLUE, (xplantilla, yplantilla, 10, 10))
+                    pygame.draw.rect(self.windowSurface, ORANGE, (xplantilla, yplantilla, 10, 10))
                 xplantilla += 10
             xplantilla = xinicial
             yplantilla += 10
