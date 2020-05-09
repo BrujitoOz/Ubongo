@@ -1,15 +1,20 @@
 import pygame, sys
 from Juego import Juego
 from Jugador import Jugador
-from Constantes import BLUE, BLACK, GREEN, WHITE
+from Constantes import BLUE, BLACK, GREEN, WHITE, ORANGE
 from pygame.locals import *
 
 def game_intro():
     windowSurface = pygame.display.set_mode((600, 600), 0, 32)
     windowSurface.fill(WHITE)
-    titleFont = pygame.font.SysFont(None, 46)
-    text_surface = titleFont.render("Ubongo", True, BLUE)
-    windowSurface.blit(text_surface, (300, 250))
+    titleFont = pygame.font.SysFont(None, 50)
+    text_surface = titleFont.render("Ubongo", True, ORANGE)
+    windowSurface.blit(text_surface, (230, 250))
+
+    SubTitleFont = pygame.font.SysFont(None, 20)
+    text_sub = SubTitleFont.render("Presione espacio para continuar", True, BLACK)
+    windowSurface.blit(text_sub, (195, 300))
+
     pygame.display.update()
     while True:
         event = pygame.event.wait()
@@ -46,7 +51,7 @@ if __name__ == "__main__":
 
 
 #Instrucciones
-# 2 - 4 jugadores 
+# 2 - 4 jugadores
 # el jugador con mas gemas de un mismo color gana
 # 1 tablero, hasta 4 fichas de jugador, reloj de arena, un dado con simbolos
 # 36 plantillas, si son 2 jugadores juegan 18 plantillas, con 3 27, con 4 36: o sea siempre se juegan 9 rondas
