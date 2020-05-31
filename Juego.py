@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, sys
 from pygame.locals import *
 from Constantes import *
 class Juego:
@@ -7,20 +7,32 @@ class Juego:
         self.cant_jugadores = len(listaJugadores)
         self.reloj_arena = 60
         self.jugador_actual = 0
-        self.dado = -1
+        self.dado = 1
         self.plantillaIndex = 0
         self.tablero = self.create_tablero()
         self.tableroJugadores = self.create_tablero_jugadores()
         self.windowSurface = windowSurface
         self.basicFont = basicFont
+        # si el juego esta en estado 1, aqui se guardara una ficha si
+        # el mouse esta sobre ella
+        self.figura_seleccionada = None
+        self.mouse_btn_one_pressed = False
+        # 0 se esta en la parte de tirar el dado
+        # 1 se esta en la parte del puzzle
+        # 2 se esta en la parte de recoger gemas
         self.estado = 0 # 0 tirar el dado, 1 arma el puzzle, 2 recoger gemas
     def create_tablero(self):
+        # se inicializa el tablero
         tablero = [[_ for _ in range(12)] for _ in range(6)]
+        # 0 rojo, 1 verde, 2 azul, 3 naranja, 4 amarillo, 5 morado
         gemas = []
+        # genero 12 gemas por cada tiipo
         for _ in range(12):
             for x in range(6):
                 gemas.append(x)
+        # se ordenan aleatoriamente las gemas
         random.shuffle(gemas)
+        # se coloca las gemas en las filas del tablero
         k = 0
         for i in range(6):
             for j in range(12):
@@ -29,22 +41,46 @@ class Juego:
         return tablero
     def create_tablero_jugadores(self):
         tablero = [[], [], [], [], [], []]
+        # se van a iniciar todos los jugadorres en la posicion
+        # que deseen (deberia definirse a la hora de crear los jugadores)
         for i in range(self.cant_jugadores):
             pos = self.jugadores[i].posicion_tablero
+            # guardo en el tablero la posicion del jugadroe
             tablero[pos].append(i)
         return tablero
     def lanzar_dados(self):
         simbolos = [0, 1, 2, 3, 4, 5]
-        self.dado = random.choice(simbolos)
-    def jugar(self, pressed):
+        self.dado = 0 # random.choice(simbolos)
+    def jugar(self, pressed, event):
+        # Si se esta en la fase de tirar el dado
         if self.estado == 0:
             if pressed[pygame.K_SPACE]:
                 self.lanzar_dados()
-                self.estado = 1
-                self.dibujar()
-        return
-    def dibujar(self):
+                self.estado = 1 # pasa el estado a resolver el puzzle
+                self.dibujar(True)
+        if self.estado == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                button = event.button
+                if button == 1:
+                    position = event.pos
+                    self.set_figura_seleccionada(position)
+                    self.mouse_btn_one_pressed = True
+                if button == 3 and self.figura_seleccionada != None:
+                    self.figura_seleccionada.change_estado()
+                    self.dibujar(False)
+            if event.type == pygame.MOUSEBUTTONUP:
+                button = event.button
+                if button == 1:
+                    self.mouse_btn_one_pressed = False
+            if event.type == pygame.MOUSEMOTION:
+                if self.mouse_btn_one_pressed and self.figura_seleccionada != None:
+                    position = event.pos
+                    self.mover_figura_seleccionada(position)
+
+    def dibujar(self, reset_position_figuras = False):
+        #Draw the white background onto the surface
         self.windowSurface.fill(WHITE)
+        # ponemos el nombre del jugador que le toca tirar los dados
         jugador = self.jugadores[self.jugador_actual]
         if self.estado == 0:
             texto = "Le toca el turno al jugador; " + str(self.jugador_actual + 1) + " - " + jugador.nombre
@@ -53,14 +89,20 @@ class Juego:
         if self.estado == 1:
             texto = "Salieron las figuras número: " + str(self.dado)
             self.dibujarTexto(self.basicFont, texto, BLACK, 5, 5)
-            self.dibujarPlantilla()
-        self.dibujarTableros()
+            self.dibujar_plantilla()
+            if reset_position_figuras:
+                self.init_pos_figuras()
+            self.dibujar_figuras()
+
+        self.dibujar_tableros()
         pygame.display.update()
 
-    def dibujarTableros(self):
-        #dibujar tablero de jugadores
+    def dibujar_tableros(self):
+
+        # jugadores
         xjugadores = 30
         yjugadores = YTABLERO
+
         for i in range(6):
             fila = self.tableroJugadores[i]
             for j in range(len(fila)):
@@ -71,14 +113,14 @@ class Juego:
                 xjugadores += 20
             yjugadores += 30
             xjugadores = 30
-        # dibujar gemas 
+        # gemas 
         xgemas = 200
         ygemas = YTABLERO
         color = BLACK
         for i in range(6):
             for j in range(12):
                 gema = self.tablero[i][j]
-                if gema == -1:
+                if gema == -1: # si ya la tiene un jugador
                     color = WHITE
                 if gema == 0:
                     color = RED
@@ -97,48 +139,85 @@ class Juego:
             ygemas += 30
             xgemas = 200
 
-    def dibujarPlantilla(self):
+    def dibujar_plantilla(self):
         # Obtenemos la plantiila y figuras a utilizar
         plantilla = Plantillas[self.plantillaIndex]
-        figuras = Opciones[self.plantillaIndex][self.dado]
 
-        xinicial = 30
-        xfiguras = xinicial
-        yfiguras = YFIGURAS
-        c = [RED, GREEN, BLUE]
-        # dibujando figuras a utilizar
-        for figura in figuras:
-            #print(figura)
-            xtemp = xfiguras
-            micolor = c.pop()
-            for i in range(len(figura)):
-                fila = figura[i]
-                for j in range(len(fila)):
-                    if fila[j] == 1:
-                        pygame.draw.rect(self.windowSurface, micolor, (xfiguras, yfiguras, 10, 10))
-                    else:
-                        pygame.draw.rect(self.windowSurface, WHITE, (xfiguras, yfiguras, 10, 10))
-                    xfiguras += 10
-                xfiguras = xtemp
-                yfiguras += 10
-            yfiguras = YFIGURAS
-            xfiguras += 4 * 10
-        
-        xplantilla = xinicial
+        xplantilla = XINICIAL
         yplantilla = YPLANTILLA
 
-        for i in range(len(plantilla)):
-            fila = plantilla[i]
+        tamanio_figura = TAMANIOFIGURA
+
+        #dibujamos las plantillas
+        plantilla_matriz = plantilla.matriz
+        for i in range(len(plantilla.matriz)):
+            fila = plantilla_matriz[i]
             for j in range(len(fila)):
                 if fila[j] == 1:
-                    pygame.draw.rect(self.windowSurface, RED, (xplantilla, yplantilla, 10, 10))
+                    pygame.draw.rect(self.windowSurface, BLACK, (xplantilla, yplantilla, tamanio_figura, tamanio_figura))
                 else:
-                    pygame.draw.rect(self.windowSurface, ORANGE, (xplantilla, yplantilla, 10, 10))
-                xplantilla += 10
-            xplantilla = xinicial
-            yplantilla += 10
+                    pygame.draw.rect(self.windowSurface, ORANGE, (xplantilla, yplantilla, tamanio_figura, tamanio_figura))
+                xplantilla += tamanio_figura
+            xplantilla = XINICIAL
+            yplantilla += tamanio_figura
+    def init_pos_figuras(self):
 
+        # plantilla a utilizar
+        plantilla = Plantillas[self.plantillaIndex]
 
+        # figuras a utilizar
+        figuras = plantilla.opciones[self.dado]
+
+        xfiguras = XINICIAL
+        yfiguras = YFIGURAS
+
+        #seteo las posiciones de las figras a utilizar
+        for figura in figuras:
+            figura.x = xfiguras
+            figura.y = yfiguras
+            yfiguras = YFIGURAS
+            xfiguras += 4 * TAMANIOFIGURA
+    def dibujar_figuras(self):
+        # plantilla a utilizar
+        plantilla = Plantillas[self.plantillaIndex]
+
+        #figuras a utilizar
+        figuras = plantilla.opciones[self.dado]
+        c = [RED, GREEN, BLUE]
+        for figura in figuras:
+            self.dibujar_figura(figura, figura.estado_actual, c)
+    def dibujar_figura(self, figura, estado, c):
+        estados = figura.estados
+        estado_actual = estados[estado]
+        xtemp = figura.x
+        x_figura = figura.x
+        y_figura = figura.y
+        tamanio_figura = TAMANIOFIGURA
+        micolor = c.pop()
+        for i in range(len(estado_actual)):
+            fila = estado_actual[i]
+            for j in range(len(fila)):
+                if fila[j] == 1:
+                    pygame.draw.rect(self.windowSurface, micolor, (x_figura, y_figura, tamanio_figura, tamanio_figura))
+                x_figura += tamanio_figura
+            x_figura = xtemp
+            y_figura += tamanio_figura
+    def set_figura_seleccionada(self, position):
+        figuras = Plantillas[self.plantillaIndex].opciones[0] #self.dado
+        mouseX = position[0]
+        mouseY = position[1]
+        for figura in figuras:
+            x = figura.x
+            y = figura.y
+            if mouseX > x and mouseX < x + 20 and mouseY > y and mouseY < y + 20:
+                self.figura_seleccionada = figura
+                return
+        self.figura_seleccionada = None
+    def mover_figura_seleccionada(self, position):
+        figura = self.figura_seleccionada
+        figura.x = position[0]
+        figura.y = position[1]
+        self.dibujar(False)
     def dibujarTexto(self, font, texto, color, x, y):
         text_surface = font.render(texto, True, color)
         self.windowSurface.blit(text_surface, (x, y))

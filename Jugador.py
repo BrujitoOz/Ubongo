@@ -5,5 +5,6 @@ class Jugador:
         self.cant_gemas = [0, 0, 0, 0, 0, 0]
         self.posicion_tablero = posicion_tablero
         self.color = color
-    def SetPlantilla(self):
+    def SetPlantilla(self, PlantillAct):
+        #self.PlantillaAct = PlantillaAct
         return 0

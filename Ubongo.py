@@ -1,10 +1,12 @@
 import pygame, sys
+from pygame.locals import *
 from Juego import Juego
 from Jugador import Jugador
 from Constantes import BLUE, BLACK, GREEN, WHITE, ORANGE
-from pygame.locals import *
+
 
 def game_intro():
+    # menu
     windowSurface = pygame.display.set_mode((600, 600), 0, 32)
     windowSurface.fill(WHITE)
     titleFont = pygame.font.SysFont(None, 50)
@@ -29,6 +31,7 @@ def play_game():
     j2 = Jugador("Maria", False, 3, BLACK)
     j3 = Jugador("Jose", False, 0, GREEN)
     ListaJugadores = [j1, j2, j3]
+    # set up fonts
     basicFont = pygame.font.SysFont(None, 16)
     windowSurface = pygame.display.set_mode((600, 600), 0, 32)
     juego = Juego(ListaJugadores, windowSurface, basicFont)
@@ -39,7 +42,7 @@ def play_game():
             pygame.quit()
             sys.exit()
         pressed = pygame.key.get_pressed()
-        juego.jugar(pressed)
+        juego.jugar(pressed, event)
 
 def main():
     pygame.init()
