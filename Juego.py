@@ -70,8 +70,11 @@ class Juego:
                     self.dibujar(False)
             if event.type == pygame.MOUSEBUTTONUP:
                 button = event.button
+                position = event.pos
                 if button == 1:
                     self.mouse_btn_one_pressed = False
+                    if(self.figura_seleccionada != None):
+                      self.soltar_figura_seleccionada(position)
             if event.type == pygame.MOUSEMOTION:
                 if self.mouse_btn_one_pressed and self.figura_seleccionada != None:
                     position = event.pos
@@ -146,6 +149,9 @@ class Juego:
         xplantilla = XINICIAL
         yplantilla = YPLANTILLA
 
+        plantilla.x = xplantilla
+        plantilla.y = yplantilla
+
         tamanio_figura = TAMANIOFIGURA
 
         #dibujamos las plantillas
@@ -206,18 +212,96 @@ class Juego:
         figuras = Plantillas[self.plantillaIndex].opciones[0] #self.dado
         mouseX = position[0]
         mouseY = position[1]
+
+        figura_seleccionada = None
+
         for figura in figuras:
             x = figura.x
             y = figura.y
             if mouseX > x and mouseX < x + 20 and mouseY > y and mouseY < y + 20:
-                self.figura_seleccionada = figura
-                return
-        self.figura_seleccionada = None
+                figura_seleccionada = figura
+                break
+
+        # si hay una figura seleccionada veo si no estaba en la plantilla
+        # si la figura esta en la plantilla tengo que sacarla de la plantilla
+        #if figura_seleccionada !=None and figura_seleccionada.en_plantilla :
+
+
+        self.figura_seleccionada = figura_seleccionada
+
     def mover_figura_seleccionada(self, position):
         figura = self.figura_seleccionada
         figura.x = position[0]
         figura.y = position[1]
         self.dibujar(False)
+
+    def soltar_figura_seleccionada(self, position):
+        x = position[0]
+        y =  position[1]
+
+       
+        figura = self.figura_seleccionada
+       
+        plantilla = Plantillas[self.plantillaIndex]
+        matriz = plantilla.matriz
+        xp = plantilla.x
+        yp = plantilla.y
+
+        xpfinal = xp + len(matriz[0])* TAMANIOFIGURA
+        ypfinal = yp + len(matriz)* TAMANIOFIGURA
+
+        if(x >= xp and x <= xpfinal and y >= yp and y <= ypfinal   ):
+          cuadrantex = (x-xp)//TAMANIOFIGURA
+          cuadrantey = (y-yp)//TAMANIOFIGURA
+
+          print("cx",cuadrantex)
+          print("cy",cuadrantey)
+          
+          fitfigura = self.validar_figura_en_plantilla(matriz, figura.get_figura_actual(),cuadrantey,cuadrantex)
+
+          # si nuestra figura encaja en la plantilla entonces la acomodamos
+          # y actualizamos la plantilla
+          if (fitfigura):
+              self.colocar_figura_en_plantilla(plantilla,figura,cuadrantey,cuadrantex)
+
+
+        self.figura_seleccionada = None
+        self.dibujar(False)        
+
+    def validar_figura_en_plantilla(self,plantilla, figura,fila_p,columna_p):
+        for i in range(len(figura)):
+            filaF = figura[i]
+            for j in range(len(filaF)):
+                columnaF = filaF[j]
+
+                if(fila_p+i >= len(plantilla) or columna_p + j >= len(plantilla[0])  ):
+                  return False
+
+                vP =plantilla[fila_p+i][columna_p + j ]
+
+                if(columnaF == 1 and vP != 0):
+                  return False
+
+        return True
+
+    def colocar_figura_en_plantilla(self,plantilla,figura,fila_p,columna_p):
+        figuraActual = figura.get_figura_actual()
+        matriz = plantilla.matriz
+
+        figura.x = plantilla.x + TAMANIOFIGURA*columna_p
+        figura.y = plantilla.y + TAMANIOFIGURA*fila_p
+        figura.en_plantilla = True
+
+        for i in range(len(figuraActual)):
+            filaF = figuraActual[i]
+            for j in range(len(filaF)):
+                columnaF = filaF[j]
+
+                if(columnaF == 1):
+                  matriz[fila_p+i][columna_p + j ] = 2
+
+    
+
     def dibujarTexto(self, font, texto, color, x, y):
         text_surface = font.render(texto, True, color)
         self.windowSurface.blit(text_surface, (x, y))
