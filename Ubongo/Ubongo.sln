@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Ubongo", "Ubongo\Ubongo.pyproj", "{A1DC2C7E-1725-4DA4-9B01-C2FEC1AE294B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1DC2C7E-1725-4DA4-9B01-C2FEC1AE294B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DC2C7E-1725-4DA4-9B01-C2FEC1AE294B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E238671-DDC5-4DDA-82A8-2115D6B107B5}
+	EndGlobalSection
+EndGlobal
