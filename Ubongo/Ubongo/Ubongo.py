@@ -74,11 +74,24 @@ class template(object):
         self.height = height
         self.number = 0
         self.CodPieces = CodPlantilla[self.number] 
-        
         self.CodColission = CodPlantillaColission[self.number]
+        self.completed = False
+        self.solv_aux = [True, True, True ,False, True, True, True,True, True, True,True, True, True,False,False,False]
        
     def draw(self, win):
         win.blit(self.pnt[self.number], (self.x, self.y))
+    def Is_solved (self):
+        cont_solv = 0
+        
+        
+        for i in self.solv_aux:
+            if i == False:
+                cont_solv += 1
+            if cont_solv >= 16:
+                return True
+        self.solv_aux = [True, True, True ,False, True, True, True,True, True, True,True, True, True,False,False,False]
+        return False
+
  
         
 #Cuadraditos para la cilission de las plantilals
@@ -104,6 +117,7 @@ class templaterect(object):
         self.visible1 = True
         self.visible2 = False
         self.visible3 = False
+ 
     def draw(self, win):
         if self.visible1:
             pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height) ,2)
@@ -111,6 +125,7 @@ class templaterect(object):
             pygame.draw.rect(win, (0,255,0), (self.x + self.width, self.y, self.width , self.height) ,2)
         if self.visible3:
             pygame.draw.rect(win, (0,255,0), (self.x +self.width+self.width, self.y, self.width, self.height) ,2)
+    
 
 
 
@@ -126,10 +141,27 @@ class pieces(object):
         self.vel = 34
         self.number = number
         self.subnumber = 0
-        self.visible = False
+        self.visible = True
     def draw(self, win):
         if self.visible:
             win.blit(pzs[self.number], (self.x, self.y))
+
+    def move_down(self):
+        self.y += self.vel
+    def move_up(self):
+        self.y -= self.vel
+    def move_right(self):
+        self.x += self.vel
+    def move_left(self):
+        self.x -= self.vel
+    def Puzzle_Assemble(self):
+        pass
+    def Valid_pos(self):
+        if self.x <= 764 and self.y <= 611:
+            return True
+        return False
+
+
 
 #jUGADOR
 class player(object):
@@ -197,8 +229,11 @@ def redrawGameWindow():
         win.blit(text, (390, 300))
     text2 = font.render(str(ListComp) , 1, (0,0,0))
     win.blit(text2, (10, 10))
-    text3 = font.render(str(cont) , 1, (0,0,0))
-    win.blit(text3, (10, 300))
+    if dado.throwed:
+        text3 = font.render(str(piezas[PieceSelect].x) , 1, (0,0,0))
+        win.blit(text3, (10, 300))
+        text4 = font.render(str(piezas[PieceSelect].y) , 1, (0,0,0))
+        win.blit(text4, (10, 320))
     pygame.display.update()
 
 
@@ -240,6 +275,9 @@ ChoosePos = True
 press = False
 PieceSelect = 0
 completed = False
+asd = 0;
+
+
 
 while ChoosePos:  
     clock.tick(27)
@@ -267,15 +305,6 @@ while ChoosePos:
 while run:
     clock.tick(27)
     
-    
-    
-
-    cont = 0
-    ListComp = [] 
-    #Con este no funciona no se porque 
-    #ListComp = CodPlantillaColission
-    ListComp = [True, True, True ,False, True, True, True,True, True, True,True, True, True,False,False,False]
-
     for event in pygame.event.get():
        if event.type == pygame.QUIT:
             run = False
@@ -315,44 +344,68 @@ while run:
                         piezas[2].visible = True
                         PieceSelect = 2
 
+    def verify():
+                for i in range(16):
+                    for j in range(3):
+                        if  piezas[j].x < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].x + piezas[j].width:
+                            if  piezas[j].y < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].y + piezas[j].height:
+                                 plantilla.solv_aux[i] = False
+    def solve():
+        pv = ([594,412],[662,412],[730,412],[798,412],[594,480],[662,480],[730,480],[798,480],
+        [594,548],[662,548],[730,548],[798,548],[594,616],[662,616],[730,616],[798,616])
+
+        for f1 in range(16):
+             piezas[0].x = pv[f1][0]
+             piezas[0].y = pv[f1][1]
+             for f2 in range(16):
+                  piezas[1].x = pv[f2][0]
+                  piezas[1].y = pv[f2][1]
+                  for f3 in range(16):
+                       piezas[2].x = pv[f3][0]
+                       piezas[2].y = pv[f3][1]
+                       redrawGameWindow()
+                       verify()
+                       if plantilla.Is_solved():
+                           completed = True
+                           return True
+                          
+                          
+                            
+    
 #Colission piezas plantilla
     if dado.throwed:
-        for i in range(16):
-            for j in range(3):
-                if  piezas[j].x < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].x + piezas[j].width:
-                    if  piezas[j].y < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].y + piezas[j].height:
-                         ListComp[i] = False
-        for i in ListComp:
-            if i == False:
-                cont += 1
-            if cont == 16:
-                completed = True
-                    
-   
+       verify()
+      
+       if plantilla.Is_solved():
+           completed = True
+# INteligence 
+        
+        #if not plantilla.Is_solved():
 
-               
-   
-    cont = 0
-    ListComp = [] 
-    ListComp = CodPlantillaColission
+         #   if piezas[PieceSelect].Valid_pos():
+          #      piezas[PieceSelect].move_down()
+           #     piezas[PieceSelect].move_right()
+       if asd == 0:
+           solve()
+           asd = 1
+      
   
 #MIVIMIENTO DE FICHAS
     keys = pygame.key.get_pressed()
     if keys[pygame.K_DOWN]:
-
-       piezas[PieceSelect].y += piezas[PieceSelect].vel
+        piezas[PieceSelect].move_down()
     if keys[pygame.K_UP]:
-       piezas[PieceSelect].y -= piezas[PieceSelect].vel
+       piezas[PieceSelect].move_up()
     if keys[pygame.K_RIGHT]:
-       piezas[PieceSelect].x += piezas[PieceSelect].vel
+       piezas[PieceSelect].move_right()
     if keys[pygame.K_LEFT]:
-       piezas[PieceSelect].x -= piezas[PieceSelect].vel
-    if keys[pygame.K_SPACE]:
-       pieza.subnumber += 1
-       if pieza.subnumber > 1:
-           pieza.subnumber = 0
- 
+       piezas[PieceSelect].move_left()
 
+    #rotar fichas falta 
+    #if keys[pygame.K_SPACE]:
+      # pieza.subnumber += 1
+       #if pieza.subnumber > 1:
+        #   pieza.subnumber = 0
     redrawGameWindow()
 
 
