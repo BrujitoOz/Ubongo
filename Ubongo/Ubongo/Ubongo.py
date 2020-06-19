@@ -14,7 +14,18 @@ gema = pygame.image.load('gema2.png')
 py2 = pygame.image.load('p2.png')
 py3 = pygame.image.load('p3.png')
 flc = pygame.image.load('flecha.png')
-pzs =  [pygame.image.load('ficha1.png') , pygame.image.load('ficha2.png'), pygame.image.load('ficha3.png'), pygame.image.load('ficha4.png'), pygame.image.load('ficha5.png'), pygame.image.load('ficha6.png'),pygame.image.load('ficha7.png'), pygame.image.load('ficha8.png'), pygame.image.load('ficha9.png'), pygame.image.load('ficha10.png'), pygame.image.load('ficha11.png'), pygame.image.load('ficha12.png')]
+pzs =  [[(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha2.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha3.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))], 
+       [(pygame.image.load('ficha4.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha5.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha6.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))], 
+       [(pygame.image.load('ficha7_0_1.png')), (pygame.image.load('ficha7_0_1.png')),(pygame.image.load('ficha7_0_1.png')), (pygame.image.load('ficha7_0_1.png'))],
+       [(pygame.image.load('ficha8.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha9.png')), (pygame.image.load('ficha9_1.png')),(pygame.image.load('ficha9.png')), (pygame.image.load('ficha9_1.png'))], 
+       [(pygame.image.load('ficha10.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha11.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))],
+       [(pygame.image.load('ficha12.png')), (pygame.image.load('ficha1_1.png')),(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png'))]]
 clock = pygame.time.Clock()
 #Codigos de las fichas de la platinlla y sobre espacios en blanco
 CodPlantilla = [[(8,6,4),(11,0,7),(0,8,6),(3,0,10),(0,10,6),(6,7,3)],[(8,6,4),(11,0,7),(0,8,6),(3,0,10),(0,10,6),(6,7,3)]]
@@ -133,9 +144,12 @@ class templaterect(object):
 
 
 #piezas 
+
+
+
 class pieces(object):
     
-    #pzs1 = [pygame.image.load('ficha1.png') , pygame.image.load('ficha1_1.png')]
+   # pzs1 = [pygame.image.load('ficha1.png') , pygame.image.load('ficha1_1.png')]
     
     def __init__(self,x,y,width,height, number):
         self.x = x
@@ -152,7 +166,7 @@ class pieces(object):
         self.create_rect_col()
     def draw(self, win):
         if self.visible:
-            win.blit(pzs[self.number], (self.x, self.y))
+            win.blit(pzs[self.number][self.subnumber], (self.x, self.y))
 
     def move_down(self):
         self.y += self.vel
@@ -203,8 +217,14 @@ class pieces(object):
                 pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
                 pygame.draw.rect(win, (0,0,255),(self.rect2) ,2)
             elif self.number == 6:
-                self.rect1 = [self.x , self.y, (self.width/3), (self.height/2)]
-                self.rect2 = (self.x  , self.y + (self.height/2), (self.width), (self.height /2 ))
+                #self.rect1 = [self.x , self.y, (self.width/3), (self.height/2)]
+                #self.rect2 = (self.x  , self.y + (self.height/2), (self.width), (self.height /2 ))
+                if self.subnumber == 0:
+                    self.rect1 = [self.x , self.y, (self.width), (self.height/2)]
+                    self.rect2 = (self.x  , self.y + (self.height/2), (self.width/3), (self.height /2 ))
+                elif self.subnumber == 1:
+                    self.rect1 = [self.x , self.y, (self.width), (self.height/2)]
+                    self.rect2 = (self.x  , self.y + (self.height/2), (self.width/3), (self.height /2 ))
                 pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
                 pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
             elif self.number == 7:
@@ -213,8 +233,21 @@ class pieces(object):
                 pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
                 pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
             elif self.number == 8:
-                self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                if self.subnumber == 0:
+                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                elif self.subnumber == 1:
+                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2 = [self.x +((self.width/4)*3)  , self.y + (self.height /2 ) , (self.width/4), (self.height /2 )]
+                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+            elif self.number == 10:
+                if self.subnumber == 0:
+                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                elif self.subnumber == 1:
+                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2 = [self.x +((self.width/4)*3)  , self.y + (self.height /2 ) , (self.width/4), (self.height /2 )]
                 pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
                 pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
             elif self.number == 11:
@@ -302,6 +335,7 @@ def redrawGameWindow():
 
 
 #cREACION DE OBJETOS
+
 cont = 0
 ListComp = CodPlantillaColission
 font = pygame.font.SysFont('comicsans', 50, True )
@@ -335,7 +369,6 @@ for j in range(6):
         x = x +55
     y = y +32
     x = 0
-
 #juego
 run = True
 ChoosePos = True
@@ -343,6 +376,57 @@ press = False
 PieceSelect = 0
 completed = False
 asd = 0;
+
+def colision():
+                for i in range(16):
+                    for j in range(3):
+                        if piezas[j].number <= 3:
+                            if  piezas[j].x < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].x + piezas[j].width:
+                                if  piezas[j].y < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].y + piezas[j].height:
+                                     plantilla.solv_aux[i] = False
+                        elif piezas[j].number == 4 or piezas[j].number == 6 or piezas[j].number == 8 or piezas[j].number == 7:
+                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
+                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
+                                     plantilla.solv_aux[i] = False
+                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
+                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
+                                     plantilla.solv_aux[i] = False
+                        elif piezas[j].number == 11:
+                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
+                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
+                                     plantilla.solv_aux[i] = False
+                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
+                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
+                                     plantilla.solv_aux[i] = False
+                            if  piezas[j].rect3[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect3[0]+ piezas[j].rect3[2]:
+                                if  piezas[j].rect3[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect3[1] + piezas[j].rect3[3]:
+                                     plantilla.solv_aux[i] = False
+                return
+
+def solve():
+        pv = ([594,412],[662,412],[730,412],[798,412],[594,480],[662,480],[730,480],[798,480],
+        [594,548],[662,548],[730,548],[798,548],[594,616],[662,616],[730,616],[798,616])
+
+        for piz in range (3):
+            for gir in range(2):
+                piezas[piz].subnumber = gir
+                piezas[piz].width = pzs[plantilla.CodPieces[dado.number][piz]][gir].get_width()
+                piezas[piz].height = pzs[plantilla.CodPieces[dado.number][piz]][gir].get_height()
+                for f1 in range(16):
+                     piezas[0].x = pv[f1][0]
+                     piezas[0].y = pv[f1][1]
+                     for f2 in range(16):
+                          piezas[1].x = pv[f2][0]
+                          piezas[1].y = pv[f2][1]
+                          for f3 in range(16):
+                               piezas[2].x = pv[f3][0]
+                               piezas[2].y = pv[f3][1]
+                               redrawGameWindow()
+                               colision()
+                               if plantilla.Is_solved():
+                                   completed = True
+                                   return True
+
 
 
 
@@ -386,7 +470,7 @@ while run:
                         cuadrado.y = cuadrado.yini + ((cuadrado.height * dado.number)+(dado.number* 13.5))
                         for i in range(3):
                            #piezas.append(pieces(594 , 412, 100 , 100, plantilla.CodPieces[dado.number][i]))
-                           piezas.append(pieces(594 , 412, pzs[plantilla.CodPieces[dado.number][i]].get_width() , pzs[plantilla.CodPieces[dado.number][i]].get_height(), plantilla.CodPieces[dado.number][i]))
+                           piezas.append(pieces(594 , 412, pzs[plantilla.CodPieces[dado.number][i]][0].get_width() , pzs[plantilla.CodPieces[dado.number][i]][0].get_height(), plantilla.CodPieces[dado.number][i]))
                            #width = background.get_width() 
                            #height = background.get_height()
                         piezas[0].visible = True
@@ -413,51 +497,11 @@ while run:
                         PieceSelect = 2
 
     
-    def colision():
-                for i in range(16):
-                    for j in range(3):
-                        if piezas[j].number <= 3:
-                            if  piezas[j].x < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].x + piezas[j].width:
-                                if  piezas[j].y < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].y + piezas[j].height:
-                                     plantilla.solv_aux[i] = False
-                        elif piezas[j].number == 4 or piezas[j].number == 6 or piezas[j].number == 8 or piezas[j].number == 7:
-                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
-                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
-                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
-                                     plantilla.solv_aux[i] = False
-                        elif piezas[j].number == 11:
-                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
-                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
-                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect3[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect3[0]+ piezas[j].rect3[2]:
-                                if  piezas[j].rect3[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect3[1] + piezas[j].rect3[3]:
-                                     plantilla.solv_aux[i] = False
+    
 
 
 
-    def solve():
-        pv = ([594,412],[662,412],[730,412],[798,412],[594,480],[662,480],[730,480],[798,480],
-        [594,548],[662,548],[730,548],[798,548],[594,616],[662,616],[730,616],[798,616])
-
-        for f1 in range(16):
-             piezas[0].x = pv[f1][0]
-             piezas[0].y = pv[f1][1]
-             for f2 in range(16):
-                  piezas[1].x = pv[f2][0]
-                  piezas[1].y = pv[f2][1]
-                  for f3 in range(16):
-                       piezas[2].x = pv[f3][0]
-                       piezas[2].y = pv[f3][1]
-                       redrawGameWindow()
-                       colision()
-                       if plantilla.Is_solved():
-                           completed = True
-                           return True
+    
                           
                           
                             
@@ -492,11 +536,11 @@ while run:
        piezas[PieceSelect].move_left()
 
     #rotar fichas falta 
-    #if keys[pygame.K_SPACE]:
-      # pieza.subnumber += 1
-       #if pieza.subnumber > 1:
-        #   pieza.subnumber = 0
+    if keys[pygame.K_SPACE]:
+       piezas[PieceSelect].subnumber = piezas[PieceSelect].subnumber +1
+       if piezas[PieceSelect].subnumber > 1:
+           piezas[PieceSelect].subnumber = 0
+       piezas[PieceSelect].width = pzs[plantilla.CodPieces[dado.number][PieceSelect]][piezas[PieceSelect].subnumber].get_width()
+       piezas[PieceSelect].height = pzs[plantilla.CodPieces[dado.number][PieceSelect]][piezas[PieceSelect].subnumber].get_height()
     redrawGameWindow()
-
-
 pygame.quit()
