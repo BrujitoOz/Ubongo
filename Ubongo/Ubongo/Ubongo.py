@@ -25,6 +25,7 @@ def redrawGameWindow():
     for pz in piezas:
        pz.draw(win)
        pz.draw_rect_col(win)
+       pz.draw_rect2_col(win)
     cuadrado.draw(win)
     for cl in cualalitos:
        cl.draw(win)
@@ -33,7 +34,7 @@ def redrawGameWindow():
     if completed:
         text = font.render( 'COMPLETED: '  , 1, (0,255,0))
         win.blit(text, (390, 300))
-    text2 = font.render(str(ListComp) , 1, (0,0,0))
+    text2 = font.render(str(plantilla.CodColission) , 1, (0,0,0))
     win.blit(text2, (10, 10))
     if dado.throwed:
         text3 = font.render(str(piezas[PieceSelect].x) , 1, (0,0,0))
@@ -49,8 +50,10 @@ pygame.display.set_caption("Ubongo")
 bg = pygame.image.load('mesa.jpg')
 clock = pygame.time.Clock()
 cont = 0
-ListComp = CodPlantillaColission
-font = pygame.font.SysFont(' comicsans', 50, True)
+CPc = [[True, True, True, False, True, True, True, True, True, True, True, True, True, False, False, False],
+                         [False, True, True, True, False, True, True, True, True, True, True, True, False, False, True, True],
+                         [True, True, False, False, True, True, True, False, True, True, True, False, True, True, True, True]]
+font = pygame.font.SysFont(' comicsans', 31, True)
 jugador = player(200, 0 ,0 ,0)
 y = random.choice(range(0,6))
 jugadorcpu = playerCPU(265,200-(17*y),0,0)
@@ -58,6 +61,7 @@ tablero = board(165, 25, 914 , 200)
 flecha = arrow(150,200,0,0)
 dado = dice(1010, 600, 200,200) 
 plantilla = template(250,310, 0,0)
+ListComp = plantilla.solv_aux3
 cuadrado = templaterect(plantilla.x + 130, plantilla.y+45, 42,57)
 cualalitos = []
 for i in range(4):  
@@ -87,34 +91,30 @@ ChoosePos = True
 press = False
 PieceSelect = 0
 completed = False
-asd = 0;
+asd = 0
+pls = 0
 n = [0,0,0]
 
-def colision():
+def prueba():
+                        for c in range(piezas[0].cantrect):
+                            for np in range(3):
+                                if np != 0:
+                                    for nc in range(piezas[np].cantrect):
+                                        if  piezas[0].rect[c][0] >= piezas[np].rect2[nc][0] and piezas[np].rect2[nc][0] + piezas[np].rect2[nc][2] >= piezas[0].rect[c][0]+ piezas[0].rect[c][2]:
+                                            if  piezas[0].rect[c][1] >= piezas[np].rect2[nc][1] and piezas[np].rect2[nc][1] + piezas[np].rect2[nc][3] >= piezas[0].rect[c][1] + piezas[0].rect[c][3]:
+                                                return True 
+                
+
+def colision2():
+
                 for i in range(16):
                     for j in range(3):
-                        if piezas[j].number <= 3:
-                            if  piezas[j].x < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].x + piezas[j].width:
-                                if  piezas[j].y < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].y + piezas[j].height:
-                                     plantilla.solv_aux[i] = False
-                        elif piezas[j].number < 11:
-                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
-                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
-                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
-                                     plantilla.solv_aux[i] = False
-                        elif piezas[j].number == 11:
-                            if  piezas[j].rect1[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect1[0]+ piezas[j].rect1[2]:
-                                if  piezas[j].rect1[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect1[1] + piezas[j].rect1[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect2[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect2[0]+ piezas[j].rect2[2]:
-                                if  piezas[j].rect2[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect2[1] + piezas[j].rect2[3]:
-                                     plantilla.solv_aux[i] = False
-                            if  piezas[j].rect3[0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect3[0]+ piezas[j].rect3[2]:
-                                if  piezas[j].rect3[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect3[1] + piezas[j].rect3[3]:
-                                     plantilla.solv_aux[i] = False
+                        for c in range(piezas[j].cantrect):
+                            if  piezas[j].rect[c][0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect[c][0]+ piezas[j].rect[c][2]:
+                                if  piezas[j].rect[c][1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect[c][1] + piezas[j].rect[c][3]:
+                                     plantilla.solv_aux[i] = False   
                 return
+
 
 def valid_pos(x, y, p):
     if(x > 900 or y > 700):
@@ -146,7 +146,52 @@ def valid_pos(x, y, p):
                       if  piezas[p].rect3[1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[p].rect3[1] + piezas[p].rect3[3]:
                            return True
     else: return False
+def valid_pos_FBT(x, y, j, Cini):
+    
+    if(piezas[j].x + piezas[j].width > 900 or piezas[j].y +piezas[j].height > 700):
+        return False
+    for i in range(16):
+        for c in range(piezas[j].cantrect):
+            if  piezas[j].rect[c][0] < cualalitos[i].x and cualalitos[i].x + cualalitos[i].width < piezas[j].rect[c][0]+ piezas[j].rect[c][2]:
+                 if  piezas[j].rect[c][1] < cualalitos[i].y and cualalitos[i].y + cualalitos[i].height < piezas[j].rect[c][1] + piezas[j].rect[c][3]:
+                        if plantilla.solv_aux[i] == False:
+                            plantilla.solv_aux = Cini.copy()
+                            return False
+                        
+                        plantilla.solv_aux[i] = False   
+    return True
 
+def find_piece_wo_fit():
+    completed = True
+    for i in range (3):
+        if piezas[i].fited == False:
+            return i
+    return 5
+
+def solve_w_BT():  
+    Cini = plantilla.solv_aux.copy()
+    pv = ([594,412],[662,412],[730,412],[798,412],[594,480],[662,480],[730,480],[798,480],
+          [594,548],[662,548],[730,548],[798,548],[594,616],[662,616],[730,616],[798,616])
+    piece_act = find_piece_wo_fit()
+    if piece_act == 5:
+        return True
+    for g in range(piezas[piece_act].numgir):    
+        piezas[piece_act].subnumber = g
+        piezas[piece_act].width = pzs[plantilla.CodPieces[dado.number][piece_act]][g].get_width()
+        piezas[piece_act].height = pzs[plantilla.CodPieces[dado.number][piece_act]][g].get_height()
+        for i in range(16):
+            piezas[piece_act].x = pv[i][0]
+            piezas[piece_act].y = pv[i][1]
+            redrawGameWindow()
+            if valid_pos_FBT(piezas[piece_act].x, piezas[piece_act].y, piece_act, Cini):
+                piezas[piece_act].fited = True
+                redrawGameWindow()
+                if solve_w_BT():
+                    return True
+                plantilla.solv_aux = Cini.copy()
+                piezas[piece_act].fited = False
+    
+    return False
 
 def solve(a,b,c):
 
@@ -228,7 +273,9 @@ while run:
                         cuadrado.y = cuadrado.yini + ((cuadrado.height * dado.number)+(dado.number* 13.5))
                         for i in range(3):
                            #piezas.append(pieces(594 , 412, 100 , 100, plantilla.CodPieces[dado.number][i]))
-                           piezas.append(pieces(594 , 412, pzs[plantilla.CodPieces[dado.number][i]][0].get_width() , pzs[plantilla.CodPieces[dado.number][i]][0].get_height(), plantilla.CodPieces[dado.number][i]))
+                           
+                            piezas.append(pieces(594 , 412, pzs[plantilla.CodPieces[dado.number][i]][0].get_width() , pzs[plantilla.CodPieces[dado.number][i]][0].get_height(), plantilla.CodPieces[dado.number][i]))
+                           
                            #width = background.get_width() 
                            #height = background.get_height()
                         piezas[0].visible = True
@@ -258,7 +305,6 @@ while run:
     
 
 
-
     
                           
                           
@@ -266,18 +312,19 @@ while run:
     
 #Colission piezas plantilla
     if dado.throwed:
-       colision()
-      
+       #completed = False
+       colision2()
+       #if prueba():
+        #   completed = True
+       
        if plantilla.Is_solved():
            completed = True
-# INteligence 
-        
-        #if not plantilla.Is_solved():
 
-         #   if piezas[PieceSelect].Valid_pos():
-          #      piezas[PieceSelect].move_down()
-           #     piezas[PieceSelect].move_right()
-       if asd == 0:
+       if pls == 0:
+           if solve_w_BT():
+             completed = True
+           pls = 1
+       if asd == -1:
            for i in range (3):
                if piezas[i].number <=2  or piezas[i].number == 11 or piezas[i].number == 7:
                    n[i] = 2

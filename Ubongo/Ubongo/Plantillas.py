@@ -17,25 +17,21 @@ class template(object):
         self.width = width
         self.height = height
         self.number = 2
-        self.CodPieces = CodPlantilla[self.number] 
-        self.CodColission = CodPlantillaColission[self.number]
+        self.CodPieces = CodPlantilla[self.number]
+        self.CodColission = CodPlantillaColission[self.number].copy()
         self.completed = False
-        self.solv_aux = CodPlantillaColission[self.number]
-        self.solv_aux2 = CodPlantillaColission[self.number]
+        self.solv_aux = self.CodColission.copy()
+        self.solv_aux3 = CodPlantillaColission[self.number] 
        
     def draw(self, win):
-        win.blit(self.pnt[self.number], (self.x, self.y))
+        win.blit(self.pnt[self.number], (self.x, self.y),)
     def Is_solved (self):
+        
         cont_solv = 0
-        
-        
         for i in self.solv_aux:
             if i == False:
                 cont_solv += 1
             if cont_solv >= 16:
                 return True
-        auxi = [[True, True, True, False, True, True, True, True, True, True, True, True, True, False, False, False],
-                [False, True, True, True, False, True, True, True, True, True, True, True, False, False, True, True],
-                [True, True, False, False, True, True, True, False, True, True, True, False, True, True, True, True]]
-        self.solv_aux = auxi[self.number]
+        self.solv_aux = self.CodColission.copy()
         return False

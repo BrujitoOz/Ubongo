@@ -25,12 +25,28 @@ class pieces(object):
         self.height = height
         self.vel = 34
         self.number = number
+        self.fited = False
         self.subnumber = 0
+        self.numgir = 0
         self.visible = True
-        self.rect1 = []
-        self.rect2 = []
-        self.rect3 = []
+        self.cantrect = 0
+        self.how_gir()
+        self.how_rects()
+        self.rect = [0,0,0,0] * self.cantrect
+        self.rect2 = [0,0,0,0] * self.cantrect
+       
         self.create_rect_col()
+        self.create_rect2_col()
+
+    def how_gir(self):
+        if self.number < 3: self.numgir = 2
+        elif self.number == 3: self.numgir = 1
+        elif self.number == 7 or self.number == 11: self.numgir = 2
+        else: self.numgir = 4
+    def how_rects(self):
+        if self.number <= 3: self.cantrect = 1
+        elif self.number < 11: self.cantrect = 2
+        else: self.cantrect = 3
     def draw(self, win):
         if self.visible:
             win.blit(pzs[self.number][self.subnumber], (self.x, self.y))
@@ -49,147 +65,294 @@ class pieces(object):
         if self.x <= 764 and self.y <= 611:
             return True
         return False
-    def create_rect_col(self):     
-            if self.number == 4:
-                self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                self.rect2 = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]  
+    def create_rect_col(self):   
+            if self.number <=3:
+                self.rect[0] = [self.x+10, self.y+10, self.width-20, self.height-20]
+            elif self.number == 4:
+                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect[1] = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]  
             elif self.number == 5:
-                self.rect1 = [self.x , self.y, (self.width/2), (self.height)]
-                self.rect2 = [(self.x + (self.width/2)) , self.y + (self.height/3), (self.width/2), (self.height /3 )]
+                self.rect[0] = [self.x , self.y, (self.width/2), (self.height)]
+                self.rect[1] = [(self.x + (self.width/2)) , self.y + (self.height/3), (self.width/2), (self.height /3 )]
             elif self.number == 6:
-                self.rect1 = [self.x , self.y, (self.width/3), (self.height/2)]
-                self.rect2 = [(self.x ) , self.y + (self.height/2), (self.width), (self.height /2 )]
+                self.rect[0] = [self.x , self.y, (self.width/3), (self.height/2)]
+                self.rect[1] = [(self.x ) , self.y + (self.height/2), (self.width), (self.height /2 )]
             elif self.number == 7:
-                self.rect1 = [self.x , self.y, (self.width/2), (self.height/3)*2]
-                self.rect2 = [self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2]
+                self.rect[0] = [self.x , self.y, (self.width/2), (self.height/3)*2]
+                self.rect[1] = [self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2]
             elif self.number == 8:
-                self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
             elif self.number == 9:
-                self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
             elif self.number == 10:
-                self.rect1 = [self.x , self.y, (self.width*2/3), self.height/2]
-                self.rect2 = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
+                self.rect[0] = [self.x , self.y, (self.width*2/3), self.height/2]
+                self.rect[1] = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
             elif self.number == 11:
-                self.rect1 = [self.x , self.y, (self.width/3), (self.height/3)]
-                self.rect2 = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
-                self.rect3 = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
-
+                self.rect[0] = [self.x , self.y, (self.width/3), (self.height/3)]
+                self.rect[1] = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
+                self.rect[2] = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
+    def create_rect2_col(self):   
+            if self.number <=3:
+                self.rect2[0] = [self.x, self.y, self.width, self.height]
+            elif self.number == 4:
+                self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect2[1] = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]  
+            elif self.number == 5:
+                self.rect2[0] = [self.x , self.y, (self.width/2), (self.height)]
+                self.rect2[1] = [(self.x + (self.width/2)) , self.y + (self.height/3), (self.width/2), (self.height /3 )]
+            elif self.number == 6:
+                self.rect2[0] = [self.x , self.y, (self.width/3), (self.height/2)]
+                self.rect2[1] = [(self.x ) , self.y + (self.height/2), (self.width), (self.height /2 )]
+            elif self.number == 7:
+                self.rect2[0] = [self.x , self.y, (self.width/2), (self.height/3)*2]
+                self.rect2[1] = [self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2]
+            elif self.number == 8:
+                self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect2[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+            elif self.number == 9:
+                self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                self.rect2[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+            elif self.number == 10:
+                self.rect2[0] = [self.x , self.y, (self.width*2/3), self.height/2]
+                self.rect2[1] = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
+            elif self.number == 11:
+                self.rect2[0] = [self.x , self.y, (self.width/3), (self.height/3)]
+                self.rect2[1] = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
+                self.rect2[2] = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
 
     def draw_rect_col(self, win):
         if self.number <= 3:
-            pygame.draw.rect(win, (0,0,255), (self.x, self.y, self.width, self.height) ,2)
+            self.rect[0] = [self.x+10, self.y+10, self.width-20, self.height-20]
+            pygame.draw.rect(win, (0,0,255), self.rect[0] ,2)
         else:
             if self.number == 4:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                    self.rect2 = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]    
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, self.height-20]
+                    self.rect[1] = [self.x + 10+(self.width/2) , self.y+10 + (self.height/2), (self.width/2)-20, (self.height /2 )-20]    
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x , self.y + (self.height/2), (self.width/2), (self.height /2 )] 
+                    self.rect[0] = [self.x +10, self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x+10 , self.y + (self.height/2)+10, (self.width/2-20), (self.height /2-20 )] 
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]    
+                    self.rect[0] = [self.x +10, self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x + 10+(self.width/2) , self.y +10+ (self.height/2), (self.width/2)-20, (self.height /2 )-20]    
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x + (self.width/2), self.y, (self.width/2), self.height/2 ]
-                    self.rect2 = [self.x  , self.y + (self.height/2), (self.width), (self.height /2 )]
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255),(self.rect2) ,2)
+                    self.rect[0] = [self.x + (self.width/2)+10, self.y+10, (self.width/2)-20, self.height/2 -20]
+                    self.rect[1] = [self.x +10 , self.y + (self.height/2)+10, (self.width)-20, (self.height /2 )-20]
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 5:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                    self.rect2 = [self.x + (self.width/2) , self.y + (self.height/3), (self.width/2), (self.height /3 )]    
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, self.height-20]
+                    self.rect[1] = [self.x +10+ (self.width/2) , 10+self.y + (self.height/3), (self.width/2)-20, (self.height /3 )-20]    
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x + (self.width/3), self.y + (self.height/2), (self.width/3), (self.height /2 )] 
+                    self.rect[0] = [self.x+10 , self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x +10+ (self.width/3),10+ self.y + (self.height/2), (self.width/3)-20, (self.height /2 )-20] 
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x , self.y + (self.height/3), (self.width/2), self.height/3]
-                    self.rect2 = [self.x + (self.width/2) , self.y , (self.width/2), (self.height)]    
+                    self.rect[0] = [self.x +10, self.y + (self.height/3)+10, (self.width/2)-20, self.height/3-20]
+                    self.rect[1] = [self.x + 10+(self.width/2) , self.y +10, (self.width/2)-20, (self.height)-20]    
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x + (self.width/3), self.y, (self.width/3), self.height/2 ]
-                    self.rect2 = [self.x  , self.y + (self.height/2), (self.width), (self.height /2 )]
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255),(self.rect2) ,2)
+                    self.rect[0] = [self.x + (self.width/3)+10, self.y+10, (self.width/3)-20, self.height/2-20 ]
+                    self.rect[1] = [self.x +10 , self.y +10+ (self.height/2), (self.width)-20, (self.height /2 )-20]
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 6:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width), (self.height/2)]
-                    self.rect2 = (self.x  , self.y + (self.height/2), (self.width/3), (self.height /2 ))
+                    self.rect[0] = [self.x+10 , self.y+10, (self.width)-20, (self.height/2)-20]
+                    self.rect[1] = (self.x  +10, self.y + (self.height/2)+10, (self.width/3)-20, (self.height /2 )-20)
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width/2), (self.height/3)]
-                    self.rect2 = (self.x +(self.width/2) , self.y , (self.width/2), (self.height ))
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, (self.height/3)-20]
+                    self.rect[1] = (self.x +(self.width/2) +10, self.y +10, (self.width/2)-20, (self.height )-20)
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x + ((self.width/3)*2) , self.y, (self.width/3), (self.height/2)]
-                    self.rect2 = (self.x  , self.y + (self.height/2), (self.width), (self.height/2 ))
+                    self.rect[0] = [self.x + ((self.width/3)*2) +10, self.y+10, (self.width/3)-20, (self.height/2)-20]
+                    self.rect[1] = (self.x +10 , self.y + (self.height/2)+10, (self.width)-20, (self.height/2 )-20)
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x , self.y, (self.width/2), (self.height)]
-                    self.rect2 = (self.x +(self.width/2) , self.y + (self.height*2/3), (self.width/2), (self.height /3 ))
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, (self.height)-10]
+                    self.rect[1] = (self.x +(self.width/2)+10 , self.y + (self.height*2/3)+10, (self.width/2)-20, (self.height /3 )-20)
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 7:
                 if self.subnumber == 0 or self.subnumber == 2 :
-                    self.rect1 = [self.x , self.y, (self.width/2), (self.height/3)*2]
-                    self.rect2 = (self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2)
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, (self.height/3)*2-20]
+                    self.rect[1] = (self.x + (self.width/2)+10, self.y + (self.height/3)+10,   (self.width/2)-20, (self.height /3 )*2-20)
                 elif self.subnumber == 1 or self.subnumber == 3:
-                    self.rect1 = [self.x+(self.width/3) , self.y, (self.width*2/3), (self.height/2)]
-                    self.rect2 = (self.x , self.y + (self.height/2),   (self.width*2/3), (self.height /2 ))
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+                    self.rect[0] = [self.x+(self.width/3) +10, self.y+10, (self.width*2/3)-20, (self.height/2)-20]
+                    self.rect[1] = (self.x+10 , self.y + (self.height/2)+10,   (self.width*2/3)-20, (self.height /2 )-20)
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 8:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                    self.rect2 = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, self.height-20]
+                    self.rect[1] = [self.x +(self.width/2) +10 , self.y+10 , (self.width/2)-20, (self.height /4 )-20]
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x +((self.width/4)*3)  , self.y + (self.height /2 ) , (self.width/4), (self.height /2 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x +((self.width/4)*3) +10 , self.y + 10+(self.height /2 ) , (self.width/4)-20, (self.height /2 )-20]
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x , self.y + (self.height*3/4), (self.width/2), self.height/4]
-                    self.rect2 = [self.x +(self.width/2)  , self.y  , (self.width/2), (self.height )]
+                    self.rect[0] = [self.x +10, self.y + (self.height*3/4)+10, (self.width/2)-20, self.height/4-20]
+                    self.rect[1] = [self.x +(self.width/2) +10 , self.y+10  , (self.width/2)-20, (self.height )-20]
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x , self.y, (self.width/4), self.height/2]
-                    self.rect2 = [self.x   , self.y + (self.height /2 ) , (self.width), (self.height /2 )]
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/4)-20, self.height/2-20]
+                    self.rect[1] = [self.x   +10, self.y +10+ (self.height /2 ) , (self.width)-20, (self.height /2 )-20]
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 9:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width/2), self.height]
-                    self.rect2 = [self.x +(self.width/2)  , self.y + (self.height /4 ), (self.width/2), (self.height /4 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width/2)-20, self.height-20]
+                    self.rect[1] = [self.x +(self.width/2) +10 , self.y + (self.height /4 )+10, (self.width/2)-20, (self.height /4 )-20]
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x +((self.width/4)*2)  , self.y + (self.height /2 ) , (self.width/4), (self.height /2 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x +((self.width/4)*2) +10 , self.y+10 + (self.height /2 ) , (self.width/4)-20, (self.height /2 )-20]
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x , self.y + (self.height*2/4), (self.width/2), self.height/4]
-                    self.rect2 = [self.x +(self.width/2)  , self.y  , (self.width/2), (self.height )]
+                    self.rect[0] = [self.x +10, self.y + (self.height*2/4)+10, (self.width/2)-20, self.height/4-20]
+                    self.rect[1] = [self.x +(self.width/2) +10 , self.y +10 , (self.width/2)-20, (self.height )-20]
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x + (self.width/4), self.y, (self.width/4), self.height/2]
-                    self.rect2 = [self.x   , self.y + (self.height /2 ) , (self.width), (self.height /2 )]
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+                    self.rect[0] = [self.x + (self.width/4)+10, self.y+10, (self.width/4)-20, self.height/2-20]
+                    self.rect[1] = [self.x +10, self.y + (self.height /2 ) +10, (self.width)-20, (self.height /2 )-20]
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 10:
                 if self.subnumber == 0:
-                    self.rect1 = [self.x , self.y, (self.width*2/3), self.height/2]
-                    self.rect2 = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width*2/3)-20, self.height/2-20]
+                    self.rect[1] = [self.x   +10, self.y +10+(self.height /2 ), (self.width)-20, (self.height /2 )-20]
                 elif self.subnumber == 1:
-                    self.rect1 = [self.x , self.y, (self.width), self.height*2/3]
-                    self.rect2 = [self.x   , self.y + (self.height *2/3 ) , (self.width/2), (self.height /3 )]
+                    self.rect[0] = [self.x+10 ,10+ self.y, (self.width)-20, self.height*2/3-20]
+                    self.rect[1] = [self.x +10  , self.y +10+ (self.height *2/3 ) , (self.width/2)-20, (self.height /3 )-20]
                 elif self.subnumber == 2:
-                    self.rect1 = [self.x , self.y, (self.width), self.height/2]
-                    self.rect2 = [self.x +((self.width/3))  , self.y + (self.height /2 ) , (self.width*2/3), (self.height /2 )]
+                    self.rect[0] = [self.x +10, self.y+10, (self.width)-20, self.height/2-20]
+                    self.rect[1] = [self.x +((self.width/3))  +10, self.y + (self.height /2 )+10 , (self.width*2/3)-20, (self.height /2 )-20]
                 elif self.subnumber == 3:
-                    self.rect1 = [self.x +(self.width/2) , self.y, (self.width/2), self.height/3]
-                    self.rect2 = [self.x   , self.y + (self.height /3 ) , (self.width), (self.height*2/3 )]
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
+                    self.rect[0] = [self.x +(self.width/2)+10 , self.y+10, (self.width/2)-20, self.height/3-20]
+                    self.rect[1] = [self.x  +10 , self.y + (self.height /3 ) +10, (self.width)-20, (self.height*2/3 )-20]
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
             elif self.number == 11:
                 if self.subnumber == 0 or  self.subnumber == 2:
-                    self.rect1 = [self.x , self.y, (self.width/3), (self.height/3)]
-                    self.rect2 = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
-                    self.rect3 = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
+                    self.rect[0] = [self.x +10, self.y + 10, (self.width/3) -20, (self.height/3) -20] 
+                    self.rect[1] = [self.x +(self.width/3) +10 , self.y +10, (self.width/3)-20, (self.height)-20]
+                    self.rect[2] = [self.x +((self.width/3)*2) +10 , self.y +10+ ((self.width/3)*2) , (self.width/3)-20, (self.height /3 )-20]
                 elif self.subnumber == 1 or  self.subnumber == 3:
-                    self.rect1 = [self.x , self.y + (self.height/3), (self.width/3), (self.height*2/3)]
-                    self.rect2 = [self.x +(self.width/3)  , self.y + (self.height/3), (self.width/3), (self.height/3)]
-                    self.rect3 = [self.x +((self.width/3)*2)  , self.y , (self.width/3), (self.height*2/3 )]
+                    self.rect[0] = [self.x +10, self.y + (self.height/3)+10, (self.width/3)-20, (self.height*2/3)-20]
+                    self.rect[1] = [self.x +10+(self.width/3)  , self.y + 10+(self.height/3), (self.width/3)-20, (self.height/3)-20]
+                    self.rect[2] = [self.x +10+((self.width/3)*2)  , self.y +10, (self.width/3)-20, (self.height*2/3 )-20]
         
-                pygame.draw.rect(win, (0,0,255), (self.rect1) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect2) ,2)
-                pygame.draw.rect(win, (0,0,255), (self.rect3) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[0]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[1]) ,2)
+                pygame.draw.rect(win, (0,0,255), (self.rect[2]) ,2)
+    def draw_rect2_col(self, win):
+        if self.number <= 3:
+            self.rect2[0] = [self.x, self.y, self.width, self.height]
+            pygame.draw.rect(win, (255,0,0), self.rect2[0] ,2)
+        else:
+            if self.number == 4:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2[1] = [self.x +(self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]    
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x , self.y + (self.height/2), (self.width/2), (self.height /2 )] 
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x +(self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]    
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x + (self.width/2), self.y, (self.width/2), self.height/2 ]
+                    self.rect2[1] = [self.x +10 , self.y + (self.height/2), (self.width), (self.height /2 )]
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 5:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2[1] = [self.x + (self.width/2) , self.y + (self.height/3), (self.width/2), (self.height /3 )]    
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x + (self.width/3), self.y + (self.height/2), (self.width/3), (self.height /2 )] 
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y + (self.height/3), (self.width/2), self.height/3]
+                    self.rect2[1] = [self.x +(self.width/2) , self.y , (self.width/2), (self.height)]    
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x + (self.width/3), self.y, (self.width/3), self.height/2 ]
+                    self.rect2[1] = [self.x  , self.y + (self.height/2), (self.width), (self.height /2 )]
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 6:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width), (self.height/2)]
+                    self.rect2[1] = (self.x  , self.y + (self.height/2), (self.width/3), (self.height /2 ))
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), (self.height/3)]
+                    self.rect2[1] = (self.x +(self.width/2) , self.y , (self.width/2), (self.height ))
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x + ((self.width/3)*2) , self.y, (self.width/3), (self.height/2)]
+                    self.rect2[1] = (self.x , self.y + (self.height/2), (self.width), (self.height/2 ))
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), (self.height)]
+                    self.rect2[1] = (self.x +(self.width/2) , self.y + (self.height*2/3), (self.width/2), (self.height /3 ))
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 7:
+                if self.subnumber == 0 or self.subnumber == 2 :
+                    self.rect2[0] = [self.x , self.y, (self.width/2), (self.height/3)*2]
+                    self.rect2[1] = (self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2)
+                elif self.subnumber == 1 or self.subnumber == 3:
+                    self.rect2[0] = [self.x+(self.width/3) , self.y, (self.width*2/3), (self.height/2)]
+                    self.rect2[1] = (self.x, self.y + (self.height/2),   (self.width*2/3), (self.height /2 ))
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 8:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2[1] = [self.x +(self.width/2) , self.y , (self.width/2), (self.height /4 )]
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x +((self.width/4)*3)  , self.y +(self.height /2 ) , (self.width/4), (self.height /2 )]
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y + (self.height*3/4), (self.width/2), self.height/4]
+                    self.rect2[1] = [self.x +(self.width/2)  , self.y  , (self.width/2), (self.height )]
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x , self.y, (self.width/4), self.height/2]
+                    self.rect2[1] = [self.x  , self.y + (self.height /2 ) , (self.width), (self.height /2 )]
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 9:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width/2), self.height]
+                    self.rect2[1] = [self.x +(self.width/2) , self.y + (self.height /4 ), (self.width/2), (self.height /4 )]
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x +((self.width/4)*2)  , self.y + (self.height /2 ) , (self.width/4), (self.height /2 )]
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y + (self.height*2/4), (self.width/2), self.height/4]
+                    self.rect2[1] = [self.x +(self.width/2)  , self.y  , (self.width/2), (self.height )]
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x + (self.width/4), self.y, (self.width/4), self.height/2]
+                    self.rect2[1] = [self.x , self.y + (self.height /2 ) , (self.width), (self.height /2 )]
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 10:
+                if self.subnumber == 0:
+                    self.rect2[0] = [self.x , self.y, (self.width*2/3), self.height/2]
+                    self.rect2[1] = [self.x  , self.y +(self.height /2 ), (self.width), (self.height /2 )]
+                elif self.subnumber == 1:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height*2/3]
+                    self.rect2[1] = [self.x   , self.y + (self.height *2/3 ) , (self.width/2), (self.height /3 )]
+                elif self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y, (self.width), self.height/2]
+                    self.rect2[1] = [self.x +((self.width/3))  , self.y + (self.height /2 ) , (self.width*2/3), (self.height /2 )]
+                elif self.subnumber == 3:
+                    self.rect2[0] = [self.x +(self.width/2) , self.y, (self.width/2), self.height/3]
+                    self.rect2[1] = [self.x  , self.y + (self.height /3 ) , (self.width), (self.height*2/3 )]
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+            elif self.number == 11:
+                if self.subnumber == 0 or  self.subnumber == 2:
+                    self.rect2[0] = [self.x , self.y , (self.width/3) , (self.height/3) ] 
+                    self.rect2[1] = [self.x +(self.width/3)  , self.y, (self.width/3), (self.height)]
+                    self.rect2[2] = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
+                elif self.subnumber == 1 or  self.subnumber == 3:
+                    self.rect2[0] = [self.x , self.y + (self.height/3), (self.width/3), (self.height*2/3)]
+                    self.rect2[1] = [self.x +(self.width/3)  , self.y +(self.height/3), (self.width/3), (self.height/3)]
+                    self.rect2[2] = [self.x +((self.width/3)*2)  , self.y , (self.width/3), (self.height*2/3 )]
+        
+                pygame.draw.rect(win, (255,0,0), (self.rect2[0]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[1]) ,2)
+                pygame.draw.rect(win, (255,0,0), (self.rect2[2]) ,2)
