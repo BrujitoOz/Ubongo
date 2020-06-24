@@ -15,9 +15,6 @@ pzs =  [[(pygame.image.load('ficha1.png')), (pygame.image.load('ficha1_1.png')),
 
 
 class pieces(object):
-    
-   # pzs1 = [pygame.image.load('ficha1.png') , pygame.image.load('ficha1_1.png')]
-    
     def __init__(self, x, y, width, height, number):
         self.x = x
         self.y = y
@@ -32,9 +29,8 @@ class pieces(object):
         self.cantrect = 0
         self.how_gir()
         self.how_rects()
-        self.rect = [0,0,0,0] * self.cantrect
-        self.rect2 = [0,0,0,0] * self.cantrect
-       
+        self.rect = [0, 0, 0, 0] * self.cantrect
+        self.rect2 = [0, 0, 0, 0] * self.cantrect
         self.create_rect_col()
         self.create_rect2_col()
 
@@ -65,34 +61,34 @@ class pieces(object):
         if self.x <= 764 and self.y <= 611:
             return True
         return False
-    def create_rect_col(self):   
-            if self.number <=3:
-                self.rect[0] = [self.x+10, self.y+10, self.width-20, self.height-20]
-            elif self.number == 4:
-                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
-                self.rect[1] = [self.x + (self.width/2) , self.y + (self.height/2), (self.width/2), (self.height /2 )]  
-            elif self.number == 5:
-                self.rect[0] = [self.x , self.y, (self.width/2), (self.height)]
-                self.rect[1] = [(self.x + (self.width/2)) , self.y + (self.height/3), (self.width/2), (self.height /3 )]
-            elif self.number == 6:
-                self.rect[0] = [self.x , self.y, (self.width/3), (self.height/2)]
-                self.rect[1] = [(self.x ) , self.y + (self.height/2), (self.width), (self.height /2 )]
-            elif self.number == 7:
-                self.rect[0] = [self.x , self.y, (self.width/2), (self.height/3)*2]
-                self.rect[1] = [self.x + (self.width/2), self.y + (self.height/3),   (self.width/2), (self.height /3 )*2]
-            elif self.number == 8:
-                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
-                self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
-            elif self.number == 9:
-                self.rect[0] = [self.x , self.y, (self.width/2), self.height]
-                self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
-            elif self.number == 10:
-                self.rect[0] = [self.x , self.y, (self.width*2/3), self.height/2]
-                self.rect[1] = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
-            elif self.number == 11:
-                self.rect[0] = [self.x , self.y, (self.width/3), (self.height/3)]
-                self.rect[1] = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
-                self.rect[2] = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
+    def create_rect_col(self):
+        if self.number <= 3:
+            self.rect[0] = [self.x+10, self.y+10, self.width-20, self.height-20]
+        elif self.number == 4:
+            self.rect[0] = [self.x, self.y, (self.width/2), self.height]
+            self.rect[1] = [self.x + (self.width/2), self.y + (self.height/2), (self.width/2), (self.height /2)] 
+        elif self.number == 5:
+            self.rect[0] = [self.x, self.y, (self.width/2), (self.height)]
+            self.rect[1] = [(self.x + (self.width/2)), self.y + (self.height/3), (self.width/2), (self.height /3)]
+        elif self.number == 6:
+            self.rect[0] = [self.x, self.y, (self.width/3), (self.height/2)]
+            self.rect[1] = [(self.x), self.y + (self.height/2), (self.width), (self.height /2)]
+        elif self.number == 7:
+            self.rect[0] = [self.x, self.y, (self.width/2), (self.height/3)*2]
+            self.rect[1] = [self.x + (self.width/2), self.y + (self.height/3), (self.width/2), (self.height /3)*2]
+        elif self.number == 8:
+            self.rect[0] = [self.x , self.y, (self.width/2), self.height]
+            self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+        elif self.number == 9:
+            self.rect[0] = [self.x , self.y, (self.width/2), self.height]
+            self.rect[1] = [self.x +(self.width/2)  , self.y , (self.width/2), (self.height /4 )]
+        elif self.number == 10:
+            self.rect[0] = [self.x , self.y, (self.width*2/3), self.height/2]
+            self.rect[1] = [self.x   , self.y +(self.height /2 ), (self.width), (self.height /2 )]
+        elif self.number == 11:
+            self.rect[0] = [self.x , self.y, (self.width/3), (self.height/3)]
+            self.rect[1] = [self.x +(self.width/3)  , self.y , (self.width/3), (self.height)]
+            self.rect[2] = [self.x +((self.width/3)*2)  , self.y + ((self.width/3)*2) , (self.width/3), (self.height /3 )]
     def create_rect2_col(self):   
             if self.number <=3:
                 self.rect2[0] = [self.x, self.y, self.width, self.height]
