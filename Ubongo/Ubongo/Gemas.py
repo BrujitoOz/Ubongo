@@ -7,5 +7,7 @@ class gem(object):
         self.width = width
         self.height = height
         self.number = number
+        self.visible = True
     def draw(self, win):
-        win.blit(self.gema[self.number], (self.x, self.y))
+        if self.visible == True:
+            win.blit(self.gema[self.number], (self.x, self.y))

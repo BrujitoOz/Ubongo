@@ -17,28 +17,32 @@ class template(object):
    
     pnt = [pygame.image.load('plantilla1.png'), pygame.image.load('plantilla2.png'), pygame.image.load('plantilla3.png'), pygame.image.load('plantilla4.png'), pygame.image.load('plantilla5.png'), pygame.image.load('plantilla6.png') ]
     
-    def __init__(self,x,y,width,height):
+    def __init__(self,x,y,width,height, number):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.number = 4
+        self.number = 3
         self.CodPieces = CodPlantilla[self.number]
         self.CodColission = CodPlantillaColission[self.number].copy()
         self.completed = False
         self.solv_aux = self.CodColission.copy()
         self.solv_aux2 = self.CodColission.copy()
-        self.solv_aux3 = CodPlantillaColission[self.number] 
-       
     def draw(self, win):
         win.blit(self.pnt[self.number], (self.x, self.y),)
-    def Is_solved (self):
-        
+    def Is_solved(self):
         cont_solv = 0
         for i in self.solv_aux:
             if i == False:
                 cont_solv += 1
-            if cont_solv >= 16:
-                return True
+        if cont_solv >= 16:
+            self.solv_aux = self.CodColission.copy()
+            return True    
         self.solv_aux = self.CodColission.copy()
         return False
+    
+    def Actualizar(self):
+        self.CodPieces = CodPlantilla[self.number]
+        self.CodColission = CodPlantillaColission[self.number].copy()
+        self.solv_aux = self.CodColission.copy()
+        self.solv_aux2 = self.CodColission.copy()
