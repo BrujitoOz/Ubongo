@@ -8,4 +8,4 @@ class templatecirclescolission(object):
         self.radius = 20
 
     def draw(self, win):
-        pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height) ,2)
+        pygame.draw.rect(win, (255,255,255), (self.x, self.y, self.width, self.height) ,2)
