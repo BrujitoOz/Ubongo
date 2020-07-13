@@ -1,1 +1,1 @@
-# Computational Complexity - Ubongo
+Computational Complexity - Ubongo
