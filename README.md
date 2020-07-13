@@ -1,4 +1,4 @@
-#Computational Complexity: Ubongo
+Computational Complexity: Ubongo
 - Easy (Brute Force), Medium (Backtracking), Hard (Dynamic Programming).
 - Throw the dice clicking on it.
 - Move the figure with keyboard's arrow keys
